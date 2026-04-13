@@ -1,0 +1,30 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        // Map to store the last seen index of each character
+        vector<int> lastIndex(128, -1); 
+        int maxLength = 0;
+        int start = 0; // Left boundary of the sliding window
+
+        for (int end = 0; end < s.length(); end++) {
+            // If the character was seen before and is inside current window
+            if (lastIndex[s[end]] >= start) {
+                start = lastIndex[s[end]] + 1; // Move start past the duplicate
+            }
+            
+            // Update the last seen position of the character
+            lastIndex[s[end]] = end;
+            
+            // Calculate current window size and update max
+            maxLength = max(maxLength, end - start + 1);
+        }
+        
+        return maxLength;
+    }
+};
